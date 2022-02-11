@@ -39,9 +39,11 @@ fn main() {
                             let file1_short = file1[dir1.len()..].to_string();
                             let file2_short = file2[dir2.len()..].to_string();
                             if file1_short == file2_short {
-                                println!("[M] \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: blue
+                                println!("\x1b[1;33mM  \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: yellow, blue
+                                continue;
                             }
                         }
+                        println!("\x1b[1;35mU  {}\x1b[1;0m", file1); // unknown: magenta
                     } else if v[0] == "Only" && v[1] == "in" { // Only in PATH: FILE
                         let mut dir_name = v[2].clone();
                         if dir_name.ends_with(":") {
@@ -54,12 +56,12 @@ fn main() {
                             filepath = format!("{}/{}", dir_name, v[3]);
                         }
                         if filepath.starts_with(&dir1) {
-                            println!("[D] \x1b[1;31m{}\x1b[1;0m", filepath); // deleted: red
+                            println!("\x1b[1;33mD  \x1b[1;31m{}\x1b[1;0m", filepath); // deleted: yellow, red
                         } else if filepath.starts_with(&dir2) {
-                            println!("[A] \x1b[1;32m{}\x1b[1;0m", filepath); // added: green
+                            println!("\x1b[1;33mA  \x1b[1;32m{}\x1b[1;0m", filepath); // added: yellow, green
                         } else {
                             // Actually impossible case
-                            println!("[U] \x1b[1;35m{}\x1b[1;0m", filepath); // unknown: magenta
+                            println!("\x1b[1;35mU  {}\x1b[1;0m", filepath); // unknown: magenta
                         }
                     }
                 }
