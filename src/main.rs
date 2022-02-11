@@ -4,13 +4,17 @@ use std::env;
 use std::process::Command;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 3 {
+    let mut args: Vec<String> = env::args().collect();
+    args.remove(0);
+    if args.len() < 2 {
+        println!("Usage :");
+        println!("  diff_rq dir1 dir2");
+        println!("  diff_rq --exclude .git dir1 dir2");
         return;
     }
 
-    let mut dir1 = args[1].clone();
-    let mut dir2 = args[2].clone();
+    let mut dir1 = args[args.len()-2].clone();
+    let mut dir2 = args[args.len()-1].clone();
     if !dir1.ends_with("/") {
         dir1.push('/');
     }
@@ -18,7 +22,7 @@ fn main() {
         dir2.push('/');
     }
 
-    if let Ok(mut child) = Command::new("diff").arg("-rq").arg("--exclude").arg(".git").arg("--exclude").arg(".hg").arg(&dir1).arg(&dir2).stdout(Stdio::piped()).spawn() {
+    if let Ok(mut child) = Command::new("diff").arg("-rq").args(&args).stdout(Stdio::piped()).spawn() {
         if let Some(stdout) = child.stdout.take() {
             for ln in BufReader::new(stdout).lines() {
                 if let Ok(line) = ln {
@@ -35,7 +39,6 @@ fn main() {
                             let file1_short = file1[dir1.len()..].to_string();
                             let file2_short = file2[dir2.len()..].to_string();
                             if file1_short == file2_short {
-//                                println!("[M] \x1b[1;34m{}\x1b[1;0m {} {}", file1_short, file1, file2); // modified: blue
                                 println!("[M] \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: blue
                             }
                         }
