@@ -2,6 +2,7 @@ use std::io::{BufReader, BufRead};
 use std::process::Stdio;
 use std::env;
 use std::process::Command;
+use std::path::Path;
 
 fn main() {
     let mut args: Vec<String> = env::args().collect();
@@ -49,11 +50,16 @@ fn main() {
                         if dir_name.ends_with(":") {
                             dir_name.pop();
                         }
-                        let filepath;
+                        let mut filepath;
                         if dir_name.ends_with("/") {
                             filepath = format!("{}{}", dir_name, v[3]);
                         } else {
                             filepath = format!("{}/{}", dir_name, v[3]);
+                        }
+                        if !filepath.ends_with("/") {
+                            if Path::new(&filepath).is_dir() {
+                                filepath.push('/');
+                            }
                         }
                         if filepath.starts_with(&dir1) {
                             println!("\x1b[1;33mD  \x1b[1;31m{}\x1b[1;0m", filepath); // deleted: yellow, red
