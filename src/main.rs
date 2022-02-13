@@ -40,7 +40,7 @@ fn main() {
                             let file1_short = file1[dir1.len()..].to_string();
                             let file2_short = file2[dir2.len()..].to_string();
                             if file1_short == file2_short {
-                                println!("\x1b[1;33mM  \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: yellow, blue
+                                println!("\x1b[1;33mM \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: yellow, blue
                                 continue;
                             }
                         }
@@ -62,12 +62,12 @@ fn main() {
                             }
                         }
                         if filepath.starts_with(&dir1) {
-                            println!("\x1b[1;33mD  \x1b[1;31m{}\x1b[1;0m", filepath); // deleted: yellow, red
+                            println!("\x1b[1;33mD \x1b[1;31m{}\x1b[1;0m", filepath); // deleted: yellow, red
                         } else if filepath.starts_with(&dir2) {
-                            println!("\x1b[1;33mA  \x1b[1;32m{}\x1b[1;0m", filepath); // added: yellow, green
+                            println!("\x1b[1;33mA \x1b[1;32m{}\x1b[1;0m", filepath); // added: yellow, green
                         } else {
                             // Actually impossible case
-                            println!("\x1b[1;35mU  {}\x1b[1;0m", filepath); // unknown: magenta
+                            println!("\x1b[1;35mU {}\x1b[1;0m", filepath); // unknown: magenta
                         }
                     }
                 }
