@@ -62,9 +62,11 @@ fn main() {
                             }
                         }
                         if filepath.starts_with(&dir1) {
-                            println!("\x1b[1;33mD \x1b[1;31m{}\x1b[1;0m", filepath); // deleted: yellow, red
+                            let filepath_short = filepath[dir1.len()..].to_string();
+                            println!("\x1b[1;33mD \x1b[1;31m{}\x1b[1;0m", filepath_short); // deleted: yellow, red
                         } else if filepath.starts_with(&dir2) {
-                            println!("\x1b[1;33mA \x1b[1;32m{}\x1b[1;0m", filepath); // added: yellow, green
+                            let filepath_short = filepath[dir2.len()..].to_string();
+                            println!("\x1b[1;33mA \x1b[1;32m{}\x1b[1;0m", filepath_short); // added: yellow, green
                         } else {
                             // Actually impossible case
                             println!("\x1b[1;35mU {}\x1b[1;0m", filepath); // unknown: magenta
