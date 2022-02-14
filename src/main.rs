@@ -40,11 +40,12 @@ fn main() {
                             let file1_short = file1[dir1.len()..].to_string();
                             let file2_short = file2[dir2.len()..].to_string();
                             if file1_short == file2_short {
-                                println!("\x1b[1;33mM \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: yellow, blue
+                                println!("M │\x1b[1;34m\u{25fc}\u{25fc}\x1b[1;0m│ \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: blue
                                 continue;
                             }
+                        } else {
+                            panic!("Wrong directory prefix");
                         }
-                        println!("\x1b[1;35mU  {}\x1b[1;0m", file1); // unknown: magenta
                     } else if v[0] == "Only" && v[1] == "in" { // Only in PATH: FILE
                         let mut dir_name = v[2].clone();
                         if dir_name.ends_with(":") {
@@ -63,13 +64,12 @@ fn main() {
                         }
                         if filepath.starts_with(&dir1) {
                             let filepath_short = filepath[dir1.len()..].to_string();
-                            println!("\x1b[1;33mD \x1b[1;31m{}\x1b[1;0m", filepath_short); // deleted: yellow, red
+                            println!("D │\x1b[1;31m\u{25fc}\u{00a0}\x1b[1;0m│ \x1b[1;31m{}\x1b[1;0m", filepath_short); // deleted: red
                         } else if filepath.starts_with(&dir2) {
                             let filepath_short = filepath[dir2.len()..].to_string();
-                            println!("\x1b[1;33mA \x1b[1;32m{}\x1b[1;0m", filepath_short); // added: yellow, green
+                            println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[1;0m│ \x1b[1;32m{}\x1b[1;0m", filepath_short); // added: green
                         } else {
-                            // Actually impossible case
-                            println!("\x1b[1;35mU {}\x1b[1;0m", filepath); // unknown: magenta
+                            panic!("Wrong directory prefix");
                         }
                     }
                 }
