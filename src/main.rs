@@ -61,12 +61,23 @@ fn main() {
                             let file1_short = file1[dir1.len()..].to_string();
                             let file2_short = file2[dir2.len()..].to_string();
                             if file1_short == file2_short {
-                                if total_add_mode { // "diff_rq -uNr" case
+                                if total_add_mode {
+                                    // "diff_rq -uNr" case from second pahse
                                     println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[1;0m│ \x1b[1;32m{}\x1b[1;0m", file1_short); // added: green
-                                } else if total_delete_mode { // "diff_rq -uNr" case
+                                } else if total_delete_mode {
+                                    // "diff_rq -uNr" case from second phase
                                     println!("D │\x1b[1;31m\u{25fc}\u{00a0}\x1b[1;0m│ \x1b[1;31m{}\x1b[1;0m", file1_short); // deleted: red
                                 } else { // normal case
-                                    println!("M │\x1b[1;34m\u{25fc}\u{25fc}\x1b[1;0m│ \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: blue
+                                    if !Path::new(&file1).is_file() {
+                                        // "diff_rq -uNr" case from first phase
+                                        println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[1;0m│ \x1b[1;32m{}\x1b[1;0m", file1_short); // added: green
+                                    } else if !Path::new(&file2).is_file() {
+                                        // "diff_rq -uNr" case from first phase
+                                        println!("D │\x1b[1;31m\u{25fc}\u{00a0}\x1b[1;0m│ \x1b[1;31m{}\x1b[1;0m", file1_short); // deleted: red
+                                    } else {
+                                        // normal case
+                                        println!("M │\x1b[1;34m\u{25fc}\u{25fc}\x1b[1;0m│ \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: blue
+                                    }
                                 }
                                 continue;
                             }
