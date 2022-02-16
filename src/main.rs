@@ -62,7 +62,7 @@ fn main() {
                             let file2_short = file2[dir2.len()..].to_string();
                             if file1_short == file2_short {
                                 if total_add_mode {
-                                    // "diff_rq -uNr" case from second pahse
+                                    // "diff_rq -uNr" case from second phase
                                     println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[1;0m│ \x1b[1;32m{}\x1b[1;0m", file1_short); // added: green
                                 } else if total_delete_mode {
                                     // "diff_rq -uNr" case from second phase
