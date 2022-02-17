@@ -63,20 +63,20 @@ fn main() {
                             if file1_short == file2_short {
                                 if total_add_mode {
                                     // "diff_rq -uNr" case from second phase
-                                    println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[1;0m│ \x1b[1;32m{}\x1b[1;0m", file1_short); // added: green
+                                    println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[1;32m\x1b[22m{}\x1b[0m", file1_short); // added: green
                                 } else if total_delete_mode {
                                     // "diff_rq -uNr" case from second phase
-                                    println!("D │\x1b[1;31m\u{25fc}\u{00a0}\x1b[1;0m│ \x1b[1;31m{}\x1b[1;0m", file1_short); // deleted: red
+                                    println!("D │\x1b[1;31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[1;31m\x1b[22m{}\x1b[0m", file1_short); // deleted: red
                                 } else { // normal case
                                     if !Path::new(&file1).is_file() {
                                         // "diff_rq -uNr" case from first phase
-                                        println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[1;0m│ \x1b[1;32m{}\x1b[1;0m", file1_short); // added: green
+                                        println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[1;32m\x1b[22m{}\x1b[0m", file1_short); // added: green
                                     } else if !Path::new(&file2).is_file() {
                                         // "diff_rq -uNr" case from first phase
-                                        println!("D │\x1b[1;31m\u{25fc}\u{00a0}\x1b[1;0m│ \x1b[1;31m{}\x1b[1;0m", file1_short); // deleted: red
+                                        println!("D │\x1b[1;31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[1;31m\x1b[22m{}\x1b[0m", file1_short); // deleted: red
                                     } else {
                                         // normal case
-                                        println!("M │\x1b[1;34m\u{25fc}\u{25fc}\x1b[1;0m│ \x1b[1;34m{}\x1b[1;0m", file1_short); // modified: blue
+                                        println!("M │\x1b[1;34m\u{25fc}\u{25fc}\x1b[0m│ \x1b[1;34m\x1b[22m{}\x1b[0m", file1_short); // modified: blue
                                     }
                                 }
                                 continue;
@@ -102,10 +102,10 @@ fn main() {
                         }
                         if filepath.starts_with(&dir1) {
                             let filepath_short = filepath[dir1.len()..].to_string();
-                            println!("D │\x1b[1;31m\u{25fc}\u{00a0}\x1b[1;0m│ \x1b[1;31m{}\x1b[1;0m", filepath_short); // deleted: red
+                            println!("D │\x1b[1;31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[1;31m\x1b[22m{}\x1b[0m", filepath_short); // deleted: red
                         } else if filepath.starts_with(&dir2) {
                             let filepath_short = filepath[dir2.len()..].to_string();
-                            println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[1;0m│ \x1b[1;32m{}\x1b[1;0m", filepath_short); // added: green
+                            println!("A │\x1b[1;32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[1;32m\x1b[22m{}\x1b[0m", filepath_short); // added: green
                         } else {
                             panic!("Wrong directory prefix");
                         }
