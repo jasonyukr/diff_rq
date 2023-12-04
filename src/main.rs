@@ -1,4 +1,4 @@
-use std::io::{BufReader, BufRead};
+use std::io::{self, BufReader, BufRead, BufWriter, Write};
 use std::process::Stdio;
 use std::env;
 use std::process::Command;
@@ -44,6 +44,8 @@ fn main() {
         return;
     }
 
+    let mut out = BufWriter::new(io::stdout());
+
     if let Ok(mut child) = Command::new("diff").arg("-rq").args(&args).stdout(Stdio::piped()).spawn() {
         if let Some(stdout) = child.stdout.take() {
             for ln in BufReader::new(stdout).lines() {
@@ -63,20 +65,20 @@ fn main() {
                             if file1_short == file2_short {
                                 if total_add_mode {
                                     // "diff_rq -uNr" case from second phase
-                                    println!("A │\x1b[32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[32m{}\x1b[0m", file1_short); // added: green
+                                    writeln!(out, "A │\x1b[32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[32m{}\x1b[0m", file1_short).unwrap(); // added: green
                                 } else if total_delete_mode {
                                     // "diff_rq -uNr" case from second phase
-                                    println!("D │\x1b[31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", file1_short); // deleted: red
+                                    writeln!(out, "D │\x1b[31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", file1_short).unwrap(); // deleted: red
                                 } else { // normal case
                                     if !Path::new(&file1).is_file() {
                                         // "diff_rq -uNr" case from first phase
-                                        println!("A │\x1b[32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[32m{}\x1b[0m", file1_short); // added: green
+                                        writeln!(out, "A │\x1b[32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[32m{}\x1b[0m", file1_short).unwrap(); // added: green
                                     } else if !Path::new(&file2).is_file() {
                                         // "diff_rq -uNr" case from first phase
-                                        println!("D │\x1b[31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", file1_short); // deleted: red
+                                        writeln!(out, "D │\x1b[31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", file1_short).unwrap(); // deleted: red
                                     } else {
                                         // normal case
-                                        println!("M │\x1b[34m\u{25fc}\u{25fc}\x1b[0m│ \x1b[34m{}\x1b[0m", file1_short); // modified: blue
+                                        writeln!(out, "M │\x1b[34m\u{25fc}\u{25fc}\x1b[0m│ \x1b[34m{}\x1b[0m", file1_short).unwrap(); // modified: blue
                                     }
                                 }
                                 continue;
@@ -102,10 +104,10 @@ fn main() {
                         }
                         if filepath.starts_with(&dir1) {
                             let filepath_short = filepath[dir1.len()..].to_string();
-                            println!("D │\x1b[31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", filepath_short); // deleted: red
+                            writeln!(out, "D │\x1b[31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", filepath_short).unwrap(); // deleted: red
                         } else if filepath.starts_with(&dir2) {
                             let filepath_short = filepath[dir2.len()..].to_string();
-                            println!("A │\x1b[32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[32m{}\x1b[0m", filepath_short); // added: green
+                            writeln!(out, "A │\x1b[32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[32m{}\x1b[0m", filepath_short).unwrap(); // added: green
                         } else {
                             panic!("Wrong directory prefix");
                         }
@@ -114,4 +116,5 @@ fn main() {
             }
         }
     }
+    out.flush().unwrap();
 }
