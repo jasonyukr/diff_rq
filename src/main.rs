@@ -65,20 +65,20 @@ fn main() {
                             if file1_short == file2_short {
                                 if total_add_mode {
                                     // "diff_rq -uNr" case from second phase
-                                    writeln!(out, "A │\x1b[32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[32m{}\x1b[0m", file1_short).unwrap(); // added: green
+                                    writeln!(out, "A │\x1b[32m\u{00a0}\u{25ae}\x1b[0m│ \x1b[32m{}\x1b[0m", file1_short).unwrap(); // added: green
                                 } else if total_delete_mode {
                                     // "diff_rq -uNr" case from second phase
-                                    writeln!(out, "D │\x1b[31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", file1_short).unwrap(); // deleted: red
+                                    writeln!(out, "D │\x1b[31m\u{25ae}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", file1_short).unwrap(); // deleted: red
                                 } else { // normal case
                                     if !Path::new(&file1).is_file() {
                                         // "diff_rq -uNr" case from first phase
-                                        writeln!(out, "A │\x1b[32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[32m{}\x1b[0m", file1_short).unwrap(); // added: green
+                                        writeln!(out, "A │\x1b[32m\u{00a0}\u{25ae}\x1b[0m│ \x1b[32m{}\x1b[0m", file1_short).unwrap(); // added: green
                                     } else if !Path::new(&file2).is_file() {
                                         // "diff_rq -uNr" case from first phase
-                                        writeln!(out, "D │\x1b[31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", file1_short).unwrap(); // deleted: red
+                                        writeln!(out, "D │\x1b[31m\u{25ae}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", file1_short).unwrap(); // deleted: red
                                     } else {
                                         // normal case
-                                        writeln!(out, "M │\x1b[34m\u{25fc}\u{25fc}\x1b[0m│ \x1b[34m{}\x1b[0m", file1_short).unwrap(); // modified: blue
+                                        writeln!(out, "M │\x1b[34m\u{25ae}\u{25ae}\x1b[0m│ \x1b[34m{}\x1b[0m", file1_short).unwrap(); // modified: blue
                                     }
                                 }
                                 continue;
@@ -104,10 +104,10 @@ fn main() {
                         }
                         if filepath.starts_with(&dir1) {
                             let filepath_short = filepath[dir1.len()..].to_string();
-                            writeln!(out, "D │\x1b[31m\u{25fc}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", filepath_short).unwrap(); // deleted: red
+                            writeln!(out, "D │\x1b[31m\u{25ae}\u{00a0}\x1b[0m│ \x1b[31m{}\x1b[0m", filepath_short).unwrap(); // deleted: red
                         } else if filepath.starts_with(&dir2) {
                             let filepath_short = filepath[dir2.len()..].to_string();
-                            writeln!(out, "A │\x1b[32m\u{00a0}\u{25fc}\x1b[0m│ \x1b[32m{}\x1b[0m", filepath_short).unwrap(); // added: green
+                            writeln!(out, "A │\x1b[32m\u{00a0}\u{25ae}\x1b[0m│ \x1b[32m{}\x1b[0m", filepath_short).unwrap(); // added: green
                         } else {
                             panic!("Wrong directory prefix");
                         }
